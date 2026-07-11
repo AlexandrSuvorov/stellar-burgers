@@ -7,17 +7,17 @@ import { logoutUser } from '../../services/slices/user';
 export const ProfileMenu: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { pathname } = useLocation();
 
-  async function handleLogout() {
-    try {
-      await dispatch(logoutUser());
-      navigate('/');
-    } catch (error) {
-      console.error('Произошла ошибка при выхода из аккаунта');
+  const handleLogout = async () => {
+    const result = await dispatch(logoutUser());
+
+    if (logoutUser.fulfilled.match(result)) {
+      navigate('/', { replace: true });
+    } else {
+      console.error('Произошла ошибка при выходе из аккаунта');
     }
-  }
+  };
 
   return <ProfileMenuUI handleLogout={handleLogout} pathname={pathname} />;
 };

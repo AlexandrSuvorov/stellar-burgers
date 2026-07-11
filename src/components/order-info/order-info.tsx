@@ -15,6 +15,13 @@ export const OrderInfo: FC = () => {
   const dispatch = useDispatch();
   const orderData = useSelector(getSelectedOrder);
   const ingredients: TIngredient[] = useSelector(getIngredients);
+
+  useEffect(() => {
+    if (number) {
+      dispatch(getOrderByNumber(Number(number)));
+    }
+  }, [dispatch, number]);
+
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
@@ -47,12 +54,6 @@ export const OrderInfo: FC = () => {
       (acc, item) => acc + item.price * item.count,
       0
     );
-
-    useEffect(() => {
-      if (number) {
-        dispatch(getOrderByNumber(Number(number)));
-      }
-    }, [dispatch, number]);
 
     return {
       ...orderData,
